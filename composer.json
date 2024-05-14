@@ -1,0 +1,34 @@
+{
+  "name": "mmx/twig",
+  "type": "library",
+  "license": "MIT",
+  "version": "1.0.0",
+  "description": "Twig Template Engine for MODX 3",
+  "authors": [
+    {
+      "name": "Vasily Naumkin",
+      "email": "bezumkin@yandex.ru"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "MMX\\Twig\\": "core/src/"
+    }
+  },
+  "bin": [
+    "bin/mmx-twig"
+  ],
+  "require": {
+    "php": ">=7.4",
+    "mmx/database": "^1.1",
+    "twig/twig": "^v3.10",
+    "robmorgan/phinx": "^0.13",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "modx/revolution": "^v3.0"
+  },
+  "config": {
+    "sort-packages": true
+  }
+}

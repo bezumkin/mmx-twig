@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+
+/** @var \MODX\Revolution\modX $modx */
+require dirname(__DIR__) . '/core/bootstrap.php';
+
+(new MMX\Twig\Console\Console($modx))->run();
