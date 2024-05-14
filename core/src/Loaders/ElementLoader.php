@@ -14,6 +14,7 @@ abstract class ElementLoader implements LoaderInterface
     protected string $modelTime;
     protected string $prefix;
     protected array $cache = [];
+    protected array $timestamps = [];
 
     protected function getElement($name): ?Model
     {
@@ -40,9 +41,14 @@ abstract class ElementLoader implements LoaderInterface
         return $element;
     }
 
-    protected function getElementTime(int $id): ?Model
+    protected function getElementTime(int $id): int
     {
-        return (new $this->modelTime())->newQuery()->find($id);
+        if (!isset($this->timestamps[$id])) {
+            $model = (new $this->modelTime())->newQuery()->select('timestamp')->find($id);
+            $this->timestamps[$id] = $model ? (int)$model->timestamp : time();
+        }
+
+        return $this->timestamps[$id];
     }
 
     public function getSourceContext($name): Source
@@ -66,13 +72,8 @@ abstract class ElementLoader implements LoaderInterface
     {
         /** @var StaticElement $element */
         if ($element = $this->getElement($name)) {
-            if ($file = $element->getStaticFile()) {
-                $elemTime = (int)filemtime($file);
-            } elseif ($timestamp = $this->getElementTime($element->id)) {
-                $elemTime = (int)strtotime($timestamp->timestamp);
-            } else {
-                $elemTime = time();
-            }
+            $file = $element->getStaticFile();
+            $elemTime = $file ? (int)filemtime($file) : $this->getElementTime($element->id);
 
             return $elemTime < $time;
         }

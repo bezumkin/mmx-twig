@@ -30,7 +30,7 @@ class App extends Environment
         if (is_readable($path)) {
             $loaders[] = new FileLoader($path);
         } else {
-            $this->logEntry(modX::LOG_LEVEL_INFO, '"' . $path . '" is not readable, file provider disabled');
+            $this->logEntry(modX::LOG_LEVEL_INFO, '"' . $path . '" is not readable, file loader disabled');
         }
         parent::__construct(new ChainLoader($loaders), $this->getDefaultOptions());
 
