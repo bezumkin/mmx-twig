@@ -10,5 +10,9 @@ class ChunkLoader extends ElementLoader
     protected string $model = Chunk::class;
     protected string $name = 'name';
     protected string $modelTime = ChunkTime::class;
-    protected string $prefix = '';
+
+    public function exists($name): bool
+    {
+        return !str_contains($name, ':') && $this->getElement($name) !== null;
+    }
 }

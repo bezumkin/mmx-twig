@@ -12,33 +12,21 @@ abstract class ElementLoader implements LoaderInterface
     protected string $model;
     protected string $name;
     protected string $modelTime;
-    protected string $prefix;
     protected array $cache = [];
     protected array $timestamps = [];
 
     protected function getElement($name): ?Model
     {
-        if ($this->prefix) {
-            if (!str_starts_with($name, $this->prefix)) {
-                return null;
-            }
-            $name = substr($name, strlen($this->prefix));
-        }
-
-        if (isset($this->cache[$name])) {
+        if (array_key_exists($name, $this->cache)) {
             return $this->cache[$name];
         }
 
-        $element = (new $this->model())
+        $this->cache[$name] = (new $this->model())
             ->newQuery()
             ->where(is_numeric($name) ? ['id' => (int)$name] : [$this->name => (string)$name])
             ->first();
 
-        if ($element) {
-            $this->cache[$name] = $element;
-        }
-
-        return $element;
+        return $this->cache[$name];
     }
 
     protected function getElementTime(int $id): int
